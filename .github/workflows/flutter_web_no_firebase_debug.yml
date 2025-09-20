@@ -1,0 +1,66 @@
+name: Flutter Web No Firebase Debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📊 System Info
+      run: |
+        echo "## 🔍 System Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **OS:** $(uname -a)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter:** $(flutter --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Dart:** $(dart --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Check Dependencies
+      run: |
+        echo "## 📦 Dependencies Check" >> $GITHUB_STEP_SUMMARY
+        flutter pub deps --style=tree | head -20 >> $GITHUB_STEP_SUMMARY
+        
+    - name: 🔍 Analyze Code (Non-fatal)
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (No Firebase Debug)
+      run: |
+        echo "=== Starting Web Build Without Firebase ==="
+        echo "Flutter doctor:"
+        flutter doctor -v
+        
+        echo "=== Building without Firebase ==="
+        flutter build web --web-renderer html --no-tree-shake-icons --verbose --debug --dart-define=FLUTTER_WEB_USE_SKIA=false --dart-define=FLUTTER_WEB_AUTO_DETECT=false --dart-define=FLUTTER_WEB_CANVASKIT_URL= --dart-define=ENVIRONMENT=development --dart-define=FIREBASE_DISABLED=true
+        
+        echo "=== Build completed ==="
+        ls -la build/
+        ls -la build/web/ || echo "No web build directory found"
+        
+    - name: 📱 Upload Web Build (If Available)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: web-no-firebase-debug
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 No Firebase Debug Summary
+      run: |
+        echo "## 🔍 No Firebase Debug Complete" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** Check logs above for details" >> $GITHUB_STEP_SUMMARY
+        echo "- **Firebase:** Disabled" >> $GITHUB_STEP_SUMMARY
+        echo "- **Web Build:** Available in Artifacts (if build succeeded)" >> $GITHUB_STEP_SUMMARY
