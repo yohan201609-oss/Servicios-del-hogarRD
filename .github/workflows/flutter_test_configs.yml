@@ -1,0 +1,52 @@
+name: Flutter Test Configurations
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-configs:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - name: "Java 11 + Flutter 3.24"
+            java: '11'
+            flutter: '3.24.0'
+          - name: "Java 17 + Flutter 3.35"
+            java: '17'
+            flutter: '3.35.3'
+          - name: "Java 21 + Flutter 3.35"
+            java: '21'
+            flutter: '3.35.3'
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: ☕ Setup Java ${{ matrix.config.java }}
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '${{ matrix.config.java }}'
+        
+    - name: 🐦 Setup Flutter ${{ matrix.config.flutter }}
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '${{ matrix.config.flutter }}'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🏗️ Build APK - ${{ matrix.config.name }}
+      run: flutter build apk --debug
+      continue-on-error: true
+      
+    - name: 📱 Upload APK - ${{ matrix.config.name }}
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: apk-${{ matrix.config.name }}
+        path: build/app/outputs/flutter-apk/
+        retention-days: 30
