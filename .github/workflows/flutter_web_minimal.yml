@@ -1,0 +1,45 @@
+name: Flutter Web Minimal
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (Minimal)
+      run: |
+        echo "Building minimal web version..."
+        flutter build web --web-renderer html --no-tree-shake-icons --dart-define=FLUTTER_WEB_USE_SKIA=false --dart-define=FLUTTER_WEB_AUTO_DETECT=false --dart-define=FLUTTER_WEB_CANVASKIT_URL=
+      
+    - name: 📱 Upload Web Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-minimal
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 Web Build Summary
+      run: |
+        echo "## 🌐 Web Build Minimal Completado!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build:** Web version ready" >> $GITHUB_STEP_SUMMARY
+        echo "- **Files:** Available in Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "- **Note:** Minimal web build with basic configuration" >> $GITHUB_STEP_SUMMARY
