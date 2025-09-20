@@ -1,0 +1,49 @@
+name: Flutter Legacy Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: ☕ Setup Java 11
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '11'
+        
+    - name: 🐦 Setup Flutter Legacy
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.24.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Debug APK
+      run: flutter build apk --debug
+      
+    - name: 📱 Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-legacy
+        path: build/app/outputs/flutter-apk/
+        retention-days: 30
+        
+    - name: 📊 Legacy Build Summary
+      run: |
+        echo "## 🔄 Legacy Build Completado!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter Version:** 3.24.0" >> $GITHUB_STEP_SUMMARY
+        echo "- **Java Version:** 11" >> $GITHUB_STEP_SUMMARY
+        echo "- **APK:** Available in Artifacts" >> $GITHUB_STEP_SUMMARY
