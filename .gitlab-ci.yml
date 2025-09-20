@@ -1,0 +1,56 @@
+image: cirrusci/flutter:3.35.3
+
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_USER_HOME: "$CI_PROJECT_DIR/.gradle"
+  GRADLE_CACHE: "$CI_PROJECT_DIR/.gradle"
+
+cache:
+  paths:
+    - .pub-cache/
+    - .gradle/
+
+before_script:
+  - flutter --version
+  - flutter pub get
+
+stages:
+  - analyze
+  - test
+  - build
+
+analyze:
+  stage: analyze
+  script:
+    - flutter analyze
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+test:
+  stage: test
+  script:
+    - flutter test
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "push"'
+
+build_debug:
+  stage: build
+  script:
+    - flutter build apk --debug
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/
+    expire_in: 1 week
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "develop"'
+
+build_release:
+  stage: build
+  script:
+    - flutter build apk --release
+  artifacts:
+    paths:
+      - build/app/outputs/flutter-apk/
+    expire_in: 1 month
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "main"'

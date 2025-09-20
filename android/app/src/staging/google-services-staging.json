@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "761646982592",
+    "project_id": "servicios-hogar-rd-staging",
+    "storage_bucket": "servicios-hogar-rd-staging.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:761646982592:android:dd05aa208e81aaec1b1425",
+        "android_client_info": {
+          "package_name": "com.app.hogar.staging"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhSDFpBffPY2Oqo1Y6dBdt84Q273Qper0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>App Icon Generator</title>
+</head>
+<body>
+    <canvas id="canvas" width="1024" height="1024" style="border: 1px solid #ccc;"></canvas>
+    <br>
+    <button onclick="downloadIcon()">Download Icon</button>
+    
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Create gradient
+        const gradient = ctx.createRadialGradient(512, 512, 0, 512, 512, 460);
+        gradient.addColorStop(0, '#06b6d4'); // Cyan
+        gradient.addColorStop(1, '#1e3a8a'); // Blue
+        
+        // Draw background circle
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(512, 512, 460, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Draw "RD" text
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 300px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('RD', 512, 512);
+        
+        function downloadIcon() {
+            const link = document.createElement('a');
+            link.download = 'app_icon.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

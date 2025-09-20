@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crear Logo RD</title>
+</head>
+<body>
+    <canvas id="logoCanvas" width="512" height="512" style="border: 1px solid #ccc;"></canvas>
+    <br><br>
+    <button onclick="downloadLogo()">Descargar Logo</button>
+    
+    <script>
+        const canvas = document.getElementById('logoCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Create gradient background
+        const centerX = 256;
+        const centerY = 256;
+        const radius = 240;
+        
+        // Create radial gradient
+        const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
+        gradient.addColorStop(0, '#2196F3'); // Blue
+        gradient.addColorStop(1, '#00BCD4'); // Cyan
+        
+        // Draw background circle
+        ctx.fillStyle = gradient;
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Draw letters in white
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 200px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Draw R and D letters
+        ctx.fillText('RD', centerX, centerY);
+        
+        function downloadLogo() {
+            const link = document.createElement('a');
+            link.download = 'app_icon_rd.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+    </script>
+</body>
+</html>

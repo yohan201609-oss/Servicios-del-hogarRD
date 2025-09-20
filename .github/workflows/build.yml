@@ -1,0 +1,58 @@
+name: Build Flutter App
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Java
+      uses: actions/setup-java@v4
+      with:
+        distribution: 'zulu'
+        java-version: '17'
+    
+    - name: Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+    
+    - name: Install dependencies
+      run: flutter pub get
+    
+    - name: Analyze code
+      run: flutter analyze
+    
+    - name: Run tests
+      run: flutter test
+    
+    - name: Build APK (Debug)
+      run: flutter build apk --debug
+    
+    - name: Build APK (Release)
+      run: flutter build apk --release
+      if: github.ref == 'refs/heads/main'
+    
+    - name: Upload APK
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-apk
+        path: build/app/outputs/flutter-apk/
+    
+    - name: Upload to Firebase App Distribution (Optional)
+      if: github.ref == 'refs/heads/main'
+      uses: wzieba/Firebase-Distribution-Github-Action@v1
+      with:
+        appId: ${{ secrets.FIREBASE_APP_ID }}
+        token: ${{ secrets.FIREBASE_TOKEN }}
+        groups: testers
+        file: build/app/outputs/flutter-apk/app-release.apk

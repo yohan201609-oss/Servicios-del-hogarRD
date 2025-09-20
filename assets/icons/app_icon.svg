@@ -1,0 +1,17 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e3a8a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#06b6d4;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="512" cy="512" r="480" fill="url(#gradient)" stroke="none"/>
+  
+  <!-- R letter -->
+  <path d="M 200 200 L 200 800 L 300 800 L 300 500 L 400 500 L 400 400 L 300 400 L 300 300 L 500 300 L 500 200 Z M 300 400 L 400 400 L 400 500 L 300 500 Z" fill="white"/>
+  
+  <!-- D letter -->
+  <path d="M 600 200 L 600 800 L 700 800 L 700 200 Z M 700 200 L 800 200 L 800 500 L 700 500 Z M 800 500 L 800 800 L 700 800 Z" fill="white"/>
+</svg>

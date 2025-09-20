@@ -1,0 +1,357 @@
+{
+  "@@locale": "es",
+  "appTitle": "Servicios Hogar RD",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "welcomeMessage": "¡Bienvenido{name} a Servicios Hogar RD!",
+  "@welcomeMessage": {
+    "description": "Welcome message with user name",
+    "placeholders": {
+      "name": {
+        "type": "Object",
+        "example": " Juan"
+      }
+    }
+  },
+  "welcomeSubtitle": "Conectamos hogares dominicanos con los mejores servicios",
+  "@welcomeSubtitle": {
+    "description": "Subtitle for the welcome section"
+  },
+  "serviceCategories": "Categorías de servicios disponibles:",
+  "@serviceCategories": {
+    "description": "Title for service categories section"
+  },
+  "home": "Inicio",
+  "@home": {
+    "description": "Home tab label"
+  },
+  "services": "Servicios",
+  "@services": {
+    "description": "Services tab label"
+  },
+  "profile": "Perfil",
+  "@profile": {
+    "description": "Profile tab label"
+  },
+  "searchService": "Buscar un Servicio",
+  "@searchService": {
+    "description": "Search service option"
+  },
+  "searchServiceDescription": "Contratar profesionales para servicios en mi hogar",
+  "@searchServiceDescription": {
+    "description": "Description for search service option"
+  },
+  "offerService": "Ofrecer un Servicio",
+  "@offerService": {
+    "description": "Offer service option"
+  },
+  "offerServiceDescription": "Gestionar mi negocio y ofrecer servicios profesionales",
+  "@offerServiceDescription": {
+    "description": "Description for offer service option"
+  },
+  "whatDoYouWantToDo": "¿Qué quieres hacer hoy?",
+  "@whatDoYouWantToDo": {
+    "description": "Question for mode selection"
+  },
+  "selectModeDescription": "Selecciona el modo que mejor se adapte a lo que necesitas hacer",
+  "@selectModeDescription": {
+    "description": "Description for mode selection"
+  },
+  "client": "Cliente",
+  "@client": {
+    "description": "Client mode"
+  },
+  "provider": "Proveedor",
+  "@provider": {
+    "description": "Provider mode"
+  },
+  "settings": "Configuración",
+  "@settings": {
+    "description": "Settings title"
+  },
+  "save": "Guardar",
+  "@save": {
+    "description": "Save button"
+  },
+  "account": "Cuenta",
+  "@account": {
+    "description": "Account section"
+  },
+  "notifications": "Notificaciones",
+  "@notifications": {
+    "description": "Notifications section"
+  },
+  "privacy": "Privacidad",
+  "@privacy": {
+    "description": "Privacy section"
+  },
+  "languageAndRegion": "Idioma y Región",
+  "@languageAndRegion": {
+    "description": "Language and region section"
+  },
+  "appearance": "Apariencia",
+  "@appearance": {
+    "description": "Appearance section"
+  },
+  "security": "Seguridad",
+  "@security": {
+    "description": "Security section"
+  },
+  "support": "Soporte",
+  "@support": {
+    "description": "Support section"
+  },
+  "about": "Acerca de",
+  "@about": {
+    "description": "About section"
+  },
+  "language": "Idioma",
+  "@language": {
+    "description": "Language setting"
+  },
+  "region": "Región",
+  "@region": {
+    "description": "Region setting"
+  },
+  "currency": "Moneda",
+  "@currency": {
+    "description": "Currency setting"
+  },
+  "theme": "Tema",
+  "@theme": {
+    "description": "Theme setting"
+  },
+  "spanish": "Español",
+  "@spanish": {
+    "description": "Spanish language"
+  },
+  "english": "English",
+  "@english": {
+    "description": "English language"
+  },
+  "dominicanRepublic": "República Dominicana",
+  "@dominicanRepublic": {
+    "description": "Dominican Republic"
+  },
+  "unitedStates": "Estados Unidos",
+  "@unitedStates": {
+    "description": "United States"
+  },
+  "dominicanPeso": "Peso Dominicano (DOP)",
+  "@dominicanPeso": {
+    "description": "Dominican Peso currency"
+  },
+  "usDollar": "Dólar Americano (USD)",
+  "@usDollar": {
+    "description": "US Dollar currency"
+  },
+  "system": "Sistema",
+  "@system": {
+    "description": "System theme"
+  },
+  "light": "Claro",
+  "@light": {
+    "description": "Light theme"
+  },
+  "dark": "Oscuro",
+  "@dark": {
+    "description": "Dark theme"
+  },
+  "logout": "Cerrar Sesión",
+  "@logout": {
+    "description": "Logout action"
+  },
+  "cancel": "Cancelar",
+  "@cancel": {
+    "description": "Cancel action"
+  },
+  "close": "Cerrar",
+  "@close": {
+    "description": "Close action"
+  },
+  "editProfile": "Editar Perfil",
+  "@editProfile": {
+    "description": "Edit profile action"
+  },
+  "activeAccount": "Cuenta Activa",
+  "@activeAccount": {
+    "description": "Active account setting"
+  },
+  "activeAccountDescription": "Tu cuenta está activa y puedes recibir servicios",
+  "@activeAccountDescription": {
+    "description": "Description for active account setting"
+  },
+  "pushNotifications": "Notificaciones Push",
+  "@pushNotifications": {
+    "description": "Push notifications setting"
+  },
+  "pushNotificationsDescription": "Recibir notificaciones en el dispositivo",
+  "@pushNotificationsDescription": {
+    "description": "Description for push notifications"
+  },
+  "emailNotifications": "Notificaciones por Email",
+  "@emailNotifications": {
+    "description": "Email notifications setting"
+  },
+  "emailNotificationsDescription": "Recibir notificaciones por correo electrónico",
+  "@emailNotificationsDescription": {
+    "description": "Description for email notifications"
+  },
+  "smsNotifications": "Notificaciones por SMS",
+  "@smsNotifications": {
+    "description": "SMS notifications setting"
+  },
+  "smsNotificationsDescription": "Recibir notificaciones por mensaje de texto",
+  "@smsNotificationsDescription": {
+    "description": "Description for SMS notifications"
+  },
+  "notificationTypes": "Tipos de Notificaciones",
+  "@notificationTypes": {
+    "description": "Notification types section"
+  },
+  "ordersAndServices": "Pedidos y Servicios",
+  "@ordersAndServices": {
+    "description": "Orders and services notifications"
+  },
+  "ordersAndServicesDescription": "Notificaciones sobre pedidos y servicios",
+  "@ordersAndServicesDescription": {
+    "description": "Description for orders and services notifications"
+  },
+  "reviewsAndRatings": "Reseñas y Valoraciones",
+  "@reviewsAndRatings": {
+    "description": "Reviews and ratings notifications"
+  },
+  "reviewsAndRatingsDescription": "Notificaciones sobre reseñas recibidas",
+  "@reviewsAndRatingsDescription": {
+    "description": "Description for reviews and ratings notifications"
+  },
+  "promotions": "Promociones",
+  "@promotions": {
+    "description": "Promotions notifications"
+  },
+  "promotionsDescription": "Notificaciones sobre ofertas y promociones",
+  "@promotionsDescription": {
+    "description": "Description for promotions notifications"
+  },
+  "publicProfile": "Perfil Público",
+  "@publicProfile": {
+    "description": "Public profile setting"
+  },
+  "publicProfileDescription": "Tu perfil es visible para otros usuarios",
+  "@publicProfileDescription": {
+    "description": "Description for public profile setting"
+  },
+  "showPhone": "Mostrar Teléfono",
+  "@showPhone": {
+    "description": "Show phone setting"
+  },
+  "showPhoneDescription": "Mostrar tu número de teléfono en el perfil",
+  "@showPhoneDescription": {
+    "description": "Description for show phone setting"
+  },
+  "showLocation": "Mostrar Ubicación",
+  "@showLocation": {
+    "description": "Show location setting"
+  },
+  "showLocationDescription": "Mostrar tu ubicación aproximada",
+  "@showLocationDescription": {
+    "description": "Description for show location setting"
+  },
+  "allowMessages": "Permitir Mensajes",
+  "@allowMessages": {
+    "description": "Allow messages setting"
+  },
+  "allowMessagesDescription": "Permitir que otros usuarios te envíen mensajes",
+  "@allowMessagesDescription": {
+    "description": "Description for allow messages setting"
+  },
+  "twoFactorVerification": "Verificación en Dos Pasos",
+  "@twoFactorVerification": {
+    "description": "Two factor verification setting"
+  },
+  "twoFactorVerificationDescription": "Añadir una capa extra de seguridad",
+  "@twoFactorVerificationDescription": {
+    "description": "Description for two factor verification"
+  },
+  "changePassword": "Cambiar Contraseña",
+  "@changePassword": {
+    "description": "Change password action"
+  },
+  "activeSessions": "Sesiones Activas",
+  "@activeSessions": {
+    "description": "Active sessions action"
+  },
+  "helpCenter": "Centro de Ayuda",
+  "@helpCenter": {
+    "description": "Help center action"
+  },
+  "contactSupport": "Contactar Soporte",
+  "@contactSupport": {
+    "description": "Contact support action"
+  },
+  "reportProblem": "Reportar Problema",
+  "@reportProblem": {
+    "description": "Report problem action"
+  },
+  "sendFeedback": "Enviar Comentarios",
+  "@sendFeedback": {
+    "description": "Send feedback action"
+  },
+  "appVersion": "Versión de la App",
+  "@appVersion": {
+    "description": "App version label"
+  },
+  "termsAndConditions": "Términos y Condiciones",
+  "@termsAndConditions": {
+    "description": "Terms and conditions action"
+  },
+  "privacyPolicy": "Política de Privacidad",
+  "@privacyPolicy": {
+    "description": "Privacy policy action"
+  },
+  "licenses": "Licencias",
+  "@licenses": {
+    "description": "Licenses action"
+  },
+  "selectLanguage": "Seleccionar Idioma",
+  "@selectLanguage": {
+    "description": "Select language dialog title"
+  },
+  "selectRegion": "Seleccionar Región",
+  "@selectRegion": {
+    "description": "Select region dialog title"
+  },
+  "selectCurrency": "Seleccionar Moneda",
+  "@selectCurrency": {
+    "description": "Select currency dialog title"
+  },
+  "selectTheme": "Seleccionar Tema",
+  "@selectTheme": {
+    "description": "Select theme dialog title"
+  },
+  "logoutConfirmation": "¿Estás seguro de que quieres cerrar sesión?",
+  "@logoutConfirmation": {
+    "description": "Logout confirmation message"
+  },
+  "settingsSaved": "Configuraciones guardadas exitosamente",
+  "@settingsSaved": {
+    "description": "Settings saved success message"
+  },
+  "settingsError": "Error guardando configuraciones",
+  "@settingsError": {
+    "description": "Settings save error message"
+  },
+  "comingSoon": "Esta funcionalidad estará disponible próximamente.",
+  "@comingSoon": {
+    "description": "Coming soon message"
+  },
+  "noUserData": "No se encontró información del usuario",
+  "@noUserData": {
+    "description": "No user data found message"
+  },
+  "errorLoadingProfile": "Error cargando perfil",
+  "@errorLoadingProfile": {
+    "description": "Error loading profile message"
+  }
+}

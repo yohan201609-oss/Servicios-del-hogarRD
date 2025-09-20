@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "824485595577",
+    "project_id": "servicios-hogar-rd-prod",
+    "storage_bucket": "servicios-hogar-rd-prod.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:824485595577:android:539eff4e47d2eb54554e68",
+        "android_client_info": {
+          "package_name": "com.app.hogar"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpfGIcrCu1VhE6jEtLh9bj7p3DsU6GRtU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
