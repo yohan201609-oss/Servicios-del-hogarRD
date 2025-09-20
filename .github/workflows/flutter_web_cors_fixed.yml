@@ -1,0 +1,90 @@
+name: Flutter Web CORS Fixed
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📊 System Info
+      run: |
+        echo "## 🔍 System Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **OS:** $(uname -a)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter:** $(flutter --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Dart:** $(dart --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code (Non-fatal)
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (CORS Fixed)
+      run: |
+        echo "=== Starting Web Build (CORS Fixed) ==="
+        echo "Flutter doctor:"
+        flutter doctor -v
+        
+        echo "=== Building web with CORS fixes ==="
+        flutter build web --no-tree-shake-icons --verbose --dart-define=ENVIRONMENT=development --dart-define=FLUTTER_WEB_USE_SKIA=false --dart-define=FLUTTER_WEB_AUTO_DETECT=false --dart-define=FLUTTER_WEB_CANVASKIT_URL= --dart-define=FLUTTER_WEB_USE_SKWASM=false
+        
+        echo "=== Build completed ==="
+        ls -la build/
+        ls -la build/web/ || echo "No web build directory found"
+        
+    - name: 🔧 Fix CORS Issues
+      run: |
+        echo "=== Fixing CORS issues ==="
+        cd build/web
+        
+        # Create a simple HTTP server script
+        cat > serve.py << 'EOF'
+        import http.server
+        import socketserver
+        import os
+        
+        PORT = 8000
+        
+        class MyHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
+            def end_headers(self):
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.send_header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS')
+                self.send_header('Access-Control-Allow-Headers', 'Content-Type')
+                super().end_headers()
+        
+        with socketserver.TCPServer(("", PORT), MyHTTPRequestHandler) as httpd:
+            print(f"Server running at http://localhost:{PORT}")
+            httpd.serve_forever()
+        EOF
+        
+        echo "=== CORS fix script created ==="
+        
+    - name: 📱 Upload Web Build (If Available)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: web-cors-fixed
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 CORS Fixed Summary
+      run: |
+        echo "## 🌐 Web Build CORS Fixed!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** Build completed with CORS fixes" >> $GITHUB_STEP_SUMMARY
+        echo "- **CORS:** Fixed for local development" >> $GITHUB_STEP_SUMMARY
+        echo "- **Environment:** Development" >> $GITHUB_STEP_SUMMARY
+        echo "- **Web Build:** Available in Artifacts (if build succeeded)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Instructions:** Use 'python serve.py' to run locally" >> $GITHUB_STEP_SUMMARY
