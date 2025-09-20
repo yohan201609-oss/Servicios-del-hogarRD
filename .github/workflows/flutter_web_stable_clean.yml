@@ -1,0 +1,62 @@
+name: Flutter Web Stable Clean
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter Stable
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📊 System Info
+      run: |
+        echo "## 🔍 System Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **OS:** $(uname -a)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter:** $(flutter --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Dart:** $(dart --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code (Non-fatal)
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (Stable Clean)
+      run: |
+        echo "=== Starting Web Build (Stable Clean) ==="
+        echo "Flutter doctor:"
+        flutter doctor -v
+        
+        echo "=== Building web with stable Flutter ==="
+        flutter build web --no-tree-shake-icons --verbose --dart-define=ENVIRONMENT=development
+        
+        echo "=== Build completed ==="
+        ls -la build/
+        ls -la build/web/ || echo "No web build directory found"
+        
+    - name: 📱 Upload Web Build (If Available)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: web-stable-clean
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 Stable Clean Summary
+      run: |
+        echo "## 🌐 Web Build Stable Clean!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** Build completed with stable Flutter" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter:** 3.19.0 (more stable)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Environment:** Development" >> $GITHUB_STEP_SUMMARY
+        echo "- **Web Build:** Available in Artifacts (if build succeeded)" >> $GITHUB_STEP_SUMMARY

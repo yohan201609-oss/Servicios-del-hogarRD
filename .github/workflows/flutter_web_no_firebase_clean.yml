@@ -1,0 +1,62 @@
+name: Flutter Web No Firebase Clean
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📊 System Info
+      run: |
+        echo "## 🔍 System Information" >> $GITHUB_STEP_SUMMARY
+        echo "- **OS:** $(uname -a)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter:** $(flutter --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        echo "- **Dart:** $(dart --version | head -1)" >> $GITHUB_STEP_SUMMARY
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code (Non-fatal)
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (No Firebase Clean)
+      run: |
+        echo "=== Starting Web Build (No Firebase Clean) ==="
+        echo "Flutter doctor:"
+        flutter doctor -v
+        
+        echo "=== Building web without Firebase completely ==="
+        flutter build web --no-tree-shake-icons --verbose --dart-define=ENVIRONMENT=development --dart-define=FIREBASE_DISABLED=true --dart-define=FLUTTER_WEB_USE_SKIA=false --dart-define=FLUTTER_WEB_AUTO_DETECT=false --dart-define=FLUTTER_WEB_CANVASKIT_URL= --dart-define=FLUTTER_WEB_USE_SKWASM=false
+        
+        echo "=== Build completed ==="
+        ls -la build/
+        ls -la build/web/ || echo "No web build directory found"
+        
+    - name: 📱 Upload Web Build (If Available)
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: web-no-firebase-clean
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 No Firebase Clean Summary
+      run: |
+        echo "## 🌐 Web Build No Firebase Clean!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Status:** Build completed without Firebase" >> $GITHUB_STEP_SUMMARY
+        echo "- **Firebase:** Completely disabled" >> $GITHUB_STEP_SUMMARY
+        echo "- **Environment:** Development" >> $GITHUB_STEP_SUMMARY
+        echo "- **Web Build:** Available in Artifacts (if build succeeded)" >> $GITHUB_STEP_SUMMARY
