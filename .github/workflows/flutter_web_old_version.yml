@@ -1,0 +1,45 @@
+name: Flutter Web Old Version
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter Old Version
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.19.0'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (Old Version)
+      run: |
+        echo "Building web version with old Flutter..."
+        flutter build web --web-renderer html --no-tree-shake-icons
+      
+    - name: 📱 Upload Web Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-old-version
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 Web Build Summary
+      run: |
+        echo "## 🌐 Web Build Old Version!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Flutter Version:** 3.19.0" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build:** Web version ready" >> $GITHUB_STEP_SUMMARY
+        echo "- **Files:** Available in Artifacts" >> $GITHUB_STEP_SUMMARY
