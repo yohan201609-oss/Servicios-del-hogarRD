@@ -6,6 +6,7 @@ import 'package:logger/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../l10n/app_localizations.dart';
 import '../constants/app_constants.dart';
+import '../services/auth_service.dart';
 import 'simple_login_screen.dart';
 import 'provider_profile_screen.dart';
 import 'edit_profile_screen.dart';
@@ -27,6 +28,7 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
   int _selectedIndex = 0;
   Usuario? _usuarioActual;
   final _logger = Logger();
+  final AuthService _authService = AuthService();
   bool _isProviderMode = false; // false = cliente, true = proveedor
 
   @override
@@ -164,12 +166,29 @@ class _SimpleHomeScreenState extends State<SimpleHomeScreen> {
             ),
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => const SimpleLoginScreen(),
-                ),
-              );
+            onPressed: () async {
+              try {
+                await _authService.signOut();
+                // Clear saved credentials
+                await _authService.clearSavedCredentials();
+                if (mounted) {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (context) => const SimpleLoginScreen(),
+                    ),
+                  );
+                }
+              } catch (e) {
+                _logger.e('Error signing out: $e');
+                if (mounted) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Error al cerrar sesión: $e'),
+                      backgroundColor: Colors.red,
+                    ),
+                  );
+                }
+              }
             },
           ),
         ],

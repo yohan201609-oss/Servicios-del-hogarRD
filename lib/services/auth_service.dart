@@ -6,10 +6,7 @@ import '../models/user_profile.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
-  // Temporarily disabled due to API changes in google_sign_in 7.2.0
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(
-  //   scopes: ['email', 'profile'],
-  // );
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email', 'profile']);
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   // Get current user
@@ -66,10 +63,8 @@ class AuthService {
     }
   }
 
-  // Sign in with Google - Temporarily disabled due to API changes
+  // Sign in with Google
   Future<UserCredential?> signInWithGoogle() async {
-    throw 'Google Sign-In temporarily disabled due to API changes in google_sign_in 7.2.0';
-    /*
     try {
       // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -106,16 +101,16 @@ class AuthService {
       return result;
     } on FirebaseAuthException catch (e) {
       throw _handleAuthException(e);
+    } catch (e) {
+      throw Exception('Error with Google Sign-In: $e');
     }
-    */
   }
 
   // Sign out
   Future<void> signOut() async {
     try {
       await _auth.signOut();
-      // Google Sign-In temporarily disabled
-      // await _googleSignIn.signOut();
+      await _googleSignIn.signOut();
     } catch (e) {
       throw Exception('Error signing out: $e');
     }

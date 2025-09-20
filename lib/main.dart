@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'l10n/app_localizations.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'config/firebase_config.dart';
 import 'services/app_service.dart';
+import 'services/auth_service.dart';
 import 'screens/simple_login_screen.dart';
 import 'screens/simple_home_screen.dart';
-import 'models/user_profile.dart';
 
 // Service Category Model
 class ServiceCategory {
@@ -36,8 +35,13 @@ void main() async {
     // Continue without Firebase for now
   }
 
-  // Initialize App Service
-  await AppService.instance.initialize();
+  // Initialize App Service with error handling
+  try {
+    await AppService.instance.initialize();
+  } catch (e) {
+    print('AppService initialization error: $e');
+    // Continue without AppService for now
+  }
 
   runApp(const MyApp());
 }
@@ -50,8 +54,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  final AppService _appService = AppService.instance;
-
   @override
   void initState() {
     super.initState();
@@ -59,29 +61,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ListenableBuilder(
-      listenable: _appService.localization,
-      builder: (context, child) {
-        return MaterialApp(
-          title: 'Servicio del HogarRD',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo[900]!),
-            primarySwatch: Colors.indigo,
-          ),
-          locale: _appService.localization.currentLocale,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: const [
-            Locale('es', ''), // Spanish
-            Locale('en', ''), // English
-          ],
-          home: const AuthWrapper(),
-          routes: {
-            '/login': (context) => const SimpleLoginScreen(),
-            '/home': (context) => const SimpleHomeScreen(),
-            '/profile': (context) => const SimpleHomeScreen(),
-          },
-        );
+    return MaterialApp(
+      title: 'Servicio del HogarRD',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo[900]!),
+        primarySwatch: Colors.indigo,
+        useMaterial3: true,
+      ),
+      locale: const Locale('es', ''), // Default to Spanish
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: const [
+        Locale('es', ''), // Spanish
+        Locale('en', ''), // English
+      ],
+      home: const AuthWrapper(),
+      routes: {
+        '/login': (context) => const SimpleLoginScreen(),
+        '/home': (context) => const SimpleHomeScreen(),
+        '/profile': (context) => const SimpleHomeScreen(),
       },
     );
   }
@@ -95,7 +93,7 @@ class AuthWrapper extends StatefulWidget {
 }
 
 class _AuthWrapperState extends State<AuthWrapper> {
-  final AppService _appService = AppService.instance;
+  final AuthService _authService = AuthService();
   bool _isLoading = true;
 
   @override
@@ -106,58 +104,74 @@ class _AuthWrapperState extends State<AuthWrapper> {
 
   Future<void> _checkAuthState() async {
     try {
-      // Check Firebase Auth first
-      final firebaseUser = _appService.auth.currentUser;
-      if (firebaseUser != null) {
-        await _appService.initializeUserSession(firebaseUser.uid, 'cliente');
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      }
+      // Wait for Firebase to initialize and check auth state
+      await Future.delayed(const Duration(seconds: 1));
 
-      // Check local authentication
-      final prefs = await SharedPreferences.getInstance();
-      final usuarioJson = prefs.getString('usuario_actual');
-      if (usuarioJson != null) {
-        final Map<String, dynamic> jsonData = jsonDecode(usuarioJson);
-        final usuario = Usuario.fromJson(jsonData);
-
-        await _appService.initializeUserSession(
-          usuario.id,
-          usuario.tipoUsuario.name,
-        );
-        setState(() {
-          _isLoading = false;
-        });
-        return;
-      }
-
-      // No user found
-      setState(() {
-        _isLoading = false;
+      // Listen to auth state changes
+      _authService.authStateChanges.listen((User? user) {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
       });
     } catch (e) {
       print('Error checking auth state: $e');
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+      return const Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 20),
+              Text('Cargando aplicación...'),
+            ],
+          ),
+        ),
+      );
     }
 
-    // If user is logged in (Firebase or local), show home screen
-    if (_appService.currentUserId != null) {
-      return const SimpleHomeScreen();
-    }
+    // StreamBuilder to listen to auth state changes
+    return StreamBuilder<User?>(
+      stream: _authService.authStateChanges,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(height: 20),
+                  Text('Verificando autenticación...'),
+                ],
+              ),
+            ),
+          );
+        }
 
-    // If user is not logged in, show login screen
-    return const SimpleLoginScreen();
+        final user = snapshot.data;
+
+        if (user != null) {
+          // User is signed in, show home screen
+          return const SimpleHomeScreen();
+        } else {
+          // User is not signed in, show login screen
+          return const SimpleLoginScreen();
+        }
+      },
+    );
   }
 }
 
