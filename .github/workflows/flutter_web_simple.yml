@@ -1,0 +1,45 @@
+name: Flutter Web Simple
+
+on:
+  workflow_dispatch:
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout Repository
+      uses: actions/checkout@v4
+      
+    - name: 🐦 Setup Flutter
+      uses: subosito/flutter-action@v2
+      with:
+        flutter-version: '3.35.3'
+        channel: 'stable'
+        cache: true
+        
+    - name: 📦 Get Dependencies
+      run: flutter pub get
+      
+    - name: 🔍 Analyze Code
+      run: flutter analyze --no-fatal-infos
+      continue-on-error: true
+      
+    - name: 🏗️ Build Web (Simple)
+      run: |
+        echo "Building web version..."
+        flutter build web --web-renderer html --no-tree-shake-icons
+      
+    - name: 📱 Upload Web Build
+      uses: actions/upload-artifact@v4
+      with:
+        name: web-simple
+        path: build/web/
+        retention-days: 30
+        
+    - name: 📊 Web Build Summary
+      run: |
+        echo "## 🌐 Web Build Simple Completado!" >> $GITHUB_STEP_SUMMARY
+        echo "- **Build:** Web version ready" >> $GITHUB_STEP_SUMMARY
+        echo "- **Files:** Available in Artifacts" >> $GITHUB_STEP_SUMMARY
+        echo "- **Note:** Simple web build with HTML renderer" >> $GITHUB_STEP_SUMMARY
