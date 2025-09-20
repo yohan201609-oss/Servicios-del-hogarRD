@@ -1,16 +1,49 @@
-# Servicios Hogar RD
+# 🏠 Servicios Hogar RD
 
-A new Flutter project.
+Aplicación Flutter para conectar usuarios con servicios del hogar en República Dominicana.
 
-## Getting Started
+## 🚀 Build Remoto con GitHub Actions
 
-This project is a starting point for a Flutter application.
+Este proyecto está configurado para compilar automáticamente en GitHub Actions, solucionando problemas de espacio en disco y caché corrupta local.
 
-A few resources to get you started if this is your first Flutter project:
+### ✅ Estado del Build
+- **Último build:** $(date)
+- **Status:** ✅ Configurado
+- **APK:** Disponible en GitHub Actions
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 📱 Descargar APK
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+1. Ve a [GitHub Actions](https://github.com/yohan201609-oss/Servicios-del-hogarRD/actions)
+2. Selecciona el workflow ejecutado
+3. Descarga el APK desde "Artifacts"
+
+## 🔧 Workflows Disponibles
+
+- **Build Automático:** Se ejecuta en cada push
+- **Build por Entorno:** Dev, Staging, Prod
+- **Release:** Para distribución
+
+## 📋 Características
+
+- 🔐 Autenticación con Firebase
+- 🌍 Soporte multiidioma (ES/EN)
+- 📱 Diseño responsive
+- 🔥 Integración con Firebase
+- 🎨 UI/UX moderna
+
+## 🛠️ Desarrollo
+
+```bash
+# Clonar repositorio
+git clone https://github.com/yohan201609-oss/Servicios-del-hogarRD.git
+
+# Instalar dependencias
+flutter pub get
+
+# Ejecutar en modo debug
+flutter run
+```
+
+## 📞 Soporte
+
+Para soporte técnico, contacta al equipo de desarrollo.
